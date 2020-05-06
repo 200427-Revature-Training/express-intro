@@ -1,5 +1,14 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import userRouter from './routers/user-router';
+import { petRouter } from './routers/pet-router';
+
+/*
+    Importing has two forms - imports for standard exports and imports for
+    default exports.  Standards exports (non-default) are imported by their
+    name as defined in the source file using curly brackets.  Default exports
+    are imported without curly brackets, with any name you would like.
+*/
 
 /* 
     Initializes an Express app - the app object is now a higher level object
@@ -42,39 +51,44 @@ app.use((request, response, next) => {
     next();
 })
 
+/* Registering a router as middleware */
+app.use(...userRouter);
+app.use('/pets', petRouter);
 
-const users = [{
-    firstName: 'Abby',
-    birthdate: new Date()
-}];
+
+
+
+
+// const users = [{
+//     firstName: 'Abby',
+//     birthdate: new Date()
+// }];
 
 /* 
-    localhost:3000/users
+    http://localhost:3000/users
     responds with an array of users
 */
-app.get('/users', (request, response, next) => {
-    console.log('Request received - processing at app.get');
-    response.json(users);
-    next();
-})
+// app.get('/users', (request, response, next) => {
+//     console.log('Request received - processing at app.get');
+//     response.json(users);
+//     next();
+// })
 
 /*
     Post requests are generally used to create new resources
     Often this means we need to examine the body of the request
 */
-app.post('/users', (request, response, next) => {
-    console.log(request.body);
-    const body = request.body;
-    if (body) {
-        // add user to our list
-        users.push(body);
-    }
-    console.log('Request received - processing at app.post');
-    response.send('Processed by app.post');
-    next();
-})
-
-
+// app.post('/users', (request, response, next) => {
+//     console.log(request.body);
+//     const body = request.body;
+//     if (body) {
+//         // add user to our list
+//         users.push(body);
+//     }
+//     console.log('Request received - processing at app.post');
+//     response.send('Processed by app.post');
+//     next();
+// });
 
 
 // Starts the app, which begins listening on the port
